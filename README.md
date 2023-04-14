@@ -7,7 +7,7 @@
 3. 참고자료 : https://towardsdatascience.com/visualizing-word-embedding-with-pca-and-t-sne-961a692509f5
 
 <h1 align='center'>
-<a><img src="./images/image_2.png" width=400></a>
+<a><img src="./images/image_2.png" width=600></a>
 
-<a><img src="./images/image_1.png" width=400></a>
+<a><img src="./images/image_1.png" width=600></a>
 </h1>
