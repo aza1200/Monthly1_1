@@ -3,7 +3,6 @@ import plotly.graph_objs as go
 import numpy as np
 import streamlit as st
 from sklearn.decomposition import PCA
-from sklearn.manifold import TSNE
 import random
 
 # key vector 형식으로 저장되있는 모델이므로 keyvector 로 load
@@ -33,11 +32,8 @@ def display_scatterplot_3D(model, user_input=None, words=None, label=None, color
     
     word_vectors = np.array([model[w] for w in words])
     
-    if dim_red == 'PCA':
-        three_dim = PCA(random_state=0).fit_transform(word_vectors)[:,:3]
-    else:
-        three_dim = TSNE(n_components = 3, random_state=0, perplexity = perplexity, learning_rate = learning_rate, n_iter = iteration).fit_transform(word_vectors)[:,:3]
-
+    three_dim = PCA(random_state=0).fit_transform(word_vectors)[:,:3]
+    
     color = 'blue'
     quiver = go.Cone(
         x = [0,0,0], 
@@ -151,11 +147,7 @@ def display_scatterplot_2D(model, user_input=None, words=None, label=None, color
     
     word_vectors = np.array([model[w] for w in words])
     
-    if dim_red == 'PCA':
-        two_dim = PCA(random_state=0).fit_transform(word_vectors)[:,:2]
-    else:
-        two_dim = TSNE(random_state=0, perplexity = perplexity, learning_rate = learning_rate, n_iter = iteration).fit_transform(word_vectors)[:,:2]
-
+    two_dim = PCA(random_state=0).fit_transform(word_vectors)[:,:2]
     
     data = []
     count = 0
@@ -226,9 +218,7 @@ def display_scatterplot_2D(model, user_input=None, words=None, label=None, color
 
     st.plotly_chart(plot_figure)
 
-dim_red = st.sidebar.selectbox(
- 'Select dimension reduction method',
- ('PCA','TSNE'))
+dim_red = st.sidebar.markdown("<h2 style='text-align: center; color: black;'>Dimension Reduction Method : PCA</h2>", unsafe_allow_html=True)
 dimension = st.sidebar.selectbox(
      "Select the dimension of the visualization",
      ('2D', '3D'))
@@ -239,20 +229,10 @@ annotation = st.sidebar.radio(
      "Enable or disable the annotation on the visualization",
      ('On', 'Off'))  
 
-if dim_red == 'TSNE':
-    perplexity = st.sidebar.slider('Adjust the perplexity. The perplexity is related to the number of nearest neighbors that is used in other manifold learning algorithms. Larger datasets usually require a larger perplexity',
-    5, 50, (30))
-    
-    learning_rate = st.sidebar.slider('Adjust the learning rate',
-    10, 1000, (200))
-    
-    iteration = st.sidebar.slider('Adjust the number of iteration',
-    250, 100000, (1000))
-    
-else:
-    perplexity = 0
-    learning_rate = 0
-    iteration = 0    
+
+perplexity = 0
+learning_rate = 0
+iteration = 0    
 
 if user_input == '':
     
